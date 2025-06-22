@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Batch: {{ batch.name }} ({{ batch.course }})</h2>
+<p>Trainer: {{ batch.trainer.name }}</p>
+<p>Start Date: {{ batch.start_date }}</p>
+<p>End Date: {{ batch.end_date|default:"-" }}</p>
+<p>Days Taken: {{ batch.days_taken }}</p>
+<p>Status: {{ batch.status }}</p>
+
+<h3>Class Logs</h3>
+<table>
+    <tr>
+        <th>Date</th>
+        <th>Start Time</th>
+        <th>End Time</th>
+        <th>Duration (hrs)</th>
+    </tr>
+    {% for log in logs %}
+    <tr>
+        <td>{{ log.date }}</td>
+        <td>{{ log.start_time }}</td>
+        <td>{{ log.end_time }}</td>
+        <td>{{ log.duration }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

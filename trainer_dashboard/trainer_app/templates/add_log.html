@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Add Class Log for {{ trainer.name }}</h2>
+<form method="POST" onsubmit="return validateForm()">
+    {% csrf_token %}
+    <label>Batch:</label>
+    <select name="batch" required>
+        {% for batch in batches %}
+        <option value="{{ batch.id }}">{{ batch.name }}</option>
+        {% endfor %}
+    </select>
+    <label>Date:</label>
+    <input type="date" name="date" value="2025-06-22" required>
+    <label>Start Time:</label>
+    <input type="time" name="start_time" id="start_time" required>
+    <label>End Time:</label>
+    <input type="time" name="end_time" id="end_time" required>
+    <input type="submit" value="Add Log">
+</form>
+
+<script>
+function validateForm() {
+    const startTime = document.getElementById('start_time').value;
+    const endTime = document.getElementById('end_time').value;
+    if (startTime && endTime && endTime <= startTime) {
+        alert('End time must be after start time.');
+        return false;
+    }
+    return true;
+}
+</script>
+{% endblock %}
