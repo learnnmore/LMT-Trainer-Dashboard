@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Weekly Report (Since {{ start_date }})</h2>
+<table>
+    <tr>
+        <th>Trainer</th>
+        <th>Batch</th>
+        <th>Date</th>
+        <th>Duration (hrs)</th>
+    </tr>
+    {% for log in logs %}
+    <tr>
+        <td>{{ log.trainer.name }}</td>
+        <td>{{ log.batch.name }}</td>
+        <td>{{ log.date }}</td>
+        <td>{{ log.duration }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<a href="{% url 'weekly_report' %}?export=csv"><button>Export as CSV</button></a>
+{% endblock %}

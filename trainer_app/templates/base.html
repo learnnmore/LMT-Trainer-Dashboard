@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trainer Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .progress-bar {
+            background-color: #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        .progress {
+            background-color: #4caf50;
+            height: 20px;
+            text-align: center;
+            color: white;
+            line-height: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #333;
+            color: white;
+        }
+        button, input[type="submit"] {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover, input[type="submit"]:hover {
+            background-color: #555;
+        }
+        form {
+            margin: 20px 0;
+        }
+        label {
+            display: block;
+            margin: 5px 0;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Trainer Dashboard</h1>
+        <nav>
+            <a href="{% url 'index' %}">Home</a>
+            {% if user.is_authenticated %}
+                {% if user.is_superuser %}
+                    <a href="{% url 'add_trainer' %}">Add Trainer</a>
+                    <a href="{% url 'add_batch' %}">Add Batch</a>
+                {% endif %}
+                <a href="{% url 'add_log' %}">Add Class Log</a>
+                <a href="{% url 'weekly_report' %}">Weekly Report</a>
+                <a href="{% url 'logout' %}">Logout ({{ user.username }})</a>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+            {% endif %}
+        </nav>
+    </header>
+    <div class="container">
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>
