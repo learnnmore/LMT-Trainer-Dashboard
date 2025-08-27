@@ -1,10 +1,9 @@
 from django.db import models
-from django.contrib.auth.models import User
 from datetime import datetime
-from datetime import date as datetime_date  # Renamed to avoid conflict with field name
+from django.contrib.auth.models import User
 
 class Trainer(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)  
     name = models.CharField(max_length=100)
     subjects = models.CharField(max_length=200)
     expected_daily_hours = models.FloatField()
@@ -13,11 +12,25 @@ class Trainer(models.Model):
         return self.name
 
 class Batch(models.Model):
+    IT_COURSES = [
+        ('python', 'Python'),
+        ('java', 'Java'),
+        ('cpp', 'C++'),
+        ('web_dev', 'Web Development'),
+        ('data_science', 'Data Science'),
+        ('ml', 'Machine Learning'),
+        ('ai', 'Artificial Intelligence'),
+        ('cloud', 'Cloud Computing'),
+        ('cyber_sec', 'Cyber Security'),
+        ('dbms', 'Database Management'),
+    ]
+
     name = models.CharField(max_length=100)
-    course = models.CharField(max_length=100)
+    course = models.CharField(max_length=50, choices=IT_COURSES)  # dropdown
     start_date = models.DateField()
     end_date = models.DateField(null=True, blank=True)
-    trainer = models.ForeignKey(Trainer, on_delete=models.CASCADE)
+    trainer = models.ForeignKey("Trainer", on_delete=models.CASCADE)
+
     
     def __str__(self):
         return self.name
@@ -41,25 +54,13 @@ class DailyClassLog(models.Model):
     start_time = models.TimeField()
     end_time = models.TimeField()
     duration = models.FloatField()
+    remarks = models.TextField(null=True, blank=True)  # in hours
 
     def save(self, *args, **kwargs):
-        # Convert date to datetime.date if it's a string
-        if isinstance(self.date, str):
-            try:
-                year, month, day = map(int, self.date.split('-'))
-                self.date = datetime_date(year, month, day)
-            except (ValueError, TypeError):
-                raise ValueError("Invalid date format. Use YYYY-MM-DD.")
-        
-        # Ensure date is a datetime.date
-        if not isinstance(self.date, datetime_date):
-            raise ValueError("Date must be a datetime.date object.")
-        
+        # Calculate duration
         start = datetime.combine(self.date, self.start_time)
         end = datetime.combine(self.date, self.end_time)
-        if end <= start:
-            raise ValueError("End time must be after start time")
-        self.duration = (end - start).seconds / 3600
+        self.duration = (end - start).seconds / 3600  # Convert to hours
         super().save(*args, **kwargs)
 
     def __str__(self):

@@ -1,45 +1,44 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% if error %}
-    <p class="error">{{ error }}</p>
-{% else %}
-    <h2>Daily Progress for {{ user.trainer.name }}</h2>
-    {% for item in trainer_progress %}
-        <div>
-            <h3>{{ item.trainer.name }} ({{ item.trainer.subjects }})</h3>
-            <p>Hours Taught: {{ item.daily_hours }} / {{ item.trainer.expected_daily_hours }} hrs</p>
-            <p>Remaining: {{ item.remaining_hours }} hrs</p>
-            <div class="progress-bar">
-                <div class="progress" style="width: {{ item.progress_percentage }}%;">{{ item.progress_percentage|floatformat:0 }}%</div>
-  <a href="{% url 'edit_trainer' item.trainer.id %}">Edit</a> |
-                <a href="{% url 'delete_trainer' item.trainer.id %}" onclick="return confirm('Are you sure?')">Delete</a>
-            </div>
+<h2>Daily Progress</h2>
+{% for item in trainer_progress %}
+    <div>
+        <h3>{{ item.trainer.name }} ({{ item.trainer.subjects }})</h3>
+        <p>Hours Taught: {{ item.daily_hours }} / {{ item.trainer.expected_daily_hours }} hrs</p>
+        <p>Remaining: {{ item.remaining_hours }} hrs</p>
+        <div class="progress-bar">
+            <div class="progress" style="width: {{ item.progress_percentage }}%;">{{ item.progress_percentage|floatformat:0 }}%</div>
         </div>
-    {% endfor %}
+        
+        <a href="{% url 'edit_trainer' item.trainer.id %}">Edit</a> |
+        <a href="{% url 'delete_trainer' item.trainer.id %}" onclick="return confirm('Are you sure?')">Delete</a>
+    </div>
+{% endfor %}
 
-    <h2>Your Batches</h2>
-    <table>
-        <tr>
-            <th>Name</th>
-            <th>Course</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Days Taken</th>
-            <th>Status</th>
-            <th>Details</th>
-        </tr>
-        {% for batch in batches %}
-        <tr>
-            <td>{{ batch.name }}</td>
-            <td>{{ batch.course }}</td>
-            <td>{{ batch.start_date }}</td>
-            <td>{{ batch.end_date|default:"-" }}</td>
-            <td>{{ batch.days_taken }}</td>
-            <td>{{ batch.status }}</td>
-            <td><a href="{% url 'batch_details' batch.id %}">View</a></td>
-        </tr>
-        {% endfor %}
-    </table>
-{% endif %}
+<h2>Batches</h2>
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Course</th>
+        <th>Trainer</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Days Taken</th>
+        <th>Status</th>
+        <th>Details</th>
+    </tr>
+    {% for batch in batches %}
+    <tr>
+        <td>{{ batch.name }}</td>
+        <td>{{ batch.course }}</td>
+        <td>{{ batch.trainer.name }}</td>
+        <td>{{ batch.start_date }}</td>
+        <td>{{ batch.end_date|default:"-" }}</td>
+        <td>{{ batch.days_taken }}</td>
+        <td>{{ batch.status }}</td>
+        <td><a href="{% url 'batch_details' batch.id %}">View</a></td>
+    </tr>
+    {% endfor %}
+</table>
 {% endblock %}

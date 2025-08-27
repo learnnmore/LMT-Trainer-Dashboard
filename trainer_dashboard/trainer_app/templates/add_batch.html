@@ -1,25 +1,36 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% if user.is_superuser %}
-    <h2>Add Batch</h2>
-    <form method="POST">
-        {% csrf_token %}
-        <label>Name:</label>
-        <input type="text" name="name" required>
-        <label>Course:</label>
-        <input type="text" name="course" required>
-        <label>Start Date:</label>
-        <input type="date" name="start_date" required>
-        <label>Trainer:</label>
-        <select name="trainer" required>
-            {% for trainer in trainers %}
-            <option value="{{ trainer.id }}">{{ trainer.name }}</option>
-            {% endfor %}
-        </select>
-        <input type="submit" value="Add Batch">
-    </form>
-{% else %}
-    <p class="error">You are not authorized to add batches.</p>
-{% endif %}
+<h2>Add Batch</h2>
+<form method="POST">
+    {% csrf_token %}
+    <label>Name:</label>
+    <input type="text" name="name" required>
+    <label>Course:</label>
+<select name="course" required>
+    <option value="">-- Select Course --</option>
+    <option value="python">Python</option>
+    <option value="java">Java</option>
+    <option value="cpp">C++</option>
+    <option value="web_dev">Web Development</option>
+    <option value="data_science">Data Science</option>
+    <option value="ml">Machine Learning</option>
+    <option value="ai">Artificial Intelligence</option>
+    <option value="cloud">Cloud Computing</option>
+    <option value="cyber_sec">Cyber Security</option>
+    <option value="dbms">Database Management</option>
+</select>
+
+    <label>Start Date:</label>
+    <input type="date" name="start_date" required>
+    <label>End Date:</label>
+    <input type="date" name="end_date" required>
+    <label>Trainer:</label>
+    <select name="trainer" required>
+        {% for trainer in trainers %}
+        <option value="{{ trainer.id }}">{{ trainer.name }}</option>
+        {% endfor %}
+    </select>
+    <input type="submit" value="Add Batch">
+</form>
 {% endblock %}
