@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 style="text-align: center; margin-bottom: 20px; font-weight: bold; color: #333;">
+    Trainer Hours Worked
+</h2>
+
+<div style="max-width: 600px; margin: auto; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+    <canvas id="trainerChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const ctx = document.getElementById('trainerChart');
+
+  const labels = {{ trainer_names|safe }};
+  const data = {{ hours_worked|safe }};
+
+  // Define color palette
+  const colors = [
+    '#4e73df','#1cc88a','#36b9cc','#f6c23e',
+    '#e83e8c','#fd7e14','#20c997','#6f42c1'
+  ];
+
+  const backgroundColors = labels.map((_, i) => colors[i % colors.length]);
+
+  const chart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Hours Worked',
+        data: data,
+        backgroundColor: backgroundColors,
+        hoverOffset: 15,
+        borderWidth: 2,
+        borderColor: '#fff'
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {
+            font: { size: 14 },
+            padding: 15
+          }
+        },
+        title: {
+          display: true,
+          text: 'Total Hours Worked by Trainers',
+          font: { size: 18, weight: 'bold' }
+        },
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              let total = context.dataset.data.reduce((a, b) => a + b, 0);
+              let value = context.raw;
+              let percentage = ((value / total) * 100).toFixed(1);
+              return context.label + ': ' + value + ' hrs (' + percentage + '%)';
+            }
+          }
+        }
+      },
+      animation: {
+        animateScale: true,
+        animateRotate: true
+      }
+    }
+  });
+</script>
+{% endblock %}

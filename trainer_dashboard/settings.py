@@ -33,7 +33,7 @@ ROOT_URLCONF = 'trainer_dashboard.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -78,10 +78,17 @@ USE_I18N = True
 
 USE_TZ = True
 
-STATIC_URL = 'static/'
+import os
+
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_REDIRECT_URL = 'index'
+LOGIN_REDIRECT_URL = 'after_login'
 LOGOUT_REDIRECT_URL = 'login'
 LOGIN_URL = 'login'

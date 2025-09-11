@@ -1,26 +1,22 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% if user.is_superuser %}
-    <h2>Add Trainer</h2>
-    {% if error %}
-        <p class="error">{{ error }}</p>
-    {% endif %}
-    <form method="POST">
-        {% csrf_token %}
-        <label>Name:</label>
-        <input type="text" name="name" value="{{ form_data.name|default:'' }}" required>
-        <label>Subjects:</label>
-        <input type="text" name="subjects" value="{{ form_data.subjects|default:'' }}" required>
-        <label>Expected Daily Hours:</label>
-        <input type="number" step="0.5" name="expected_daily_hours" value="{{ form_data.expected_daily_hours|default:'' }}" required>
-        <label>Username:</label>
-        <input type="text" name="username" value="{{ form_data.username|default:'' }}" required>
-        <label>Password:</label>
-        <input type="password" name="password" required>
-        <input type="submit" value="Add Trainer">
-    </form>
-{% else %}
-    <p class="error">You are not authorized to add trainers.</p>
-{% endif %}
+<h2>Add Trainer Details</h2>
+
+<p>Welcome <strong>{{ request.user.username }}</strong> 👋. Please complete your trainer profile.</p>
+
+<form method="POST">
+    {% csrf_token %}
+    
+    <label>Name:</label>
+    <input type="text" name="name" required><br><br>
+    
+    <label>Subjects:</label>
+    <input type="text" name="subjects" required><br><br>
+    
+    <label>Expected Daily Hours:</label>
+    <input type="number" step="0.5" name="expected_daily_hours" required><br><br>
+    
+    <input type="submit" value="Save Profile">
+</form>
 {% endblock %}

@@ -15,6 +15,7 @@
         <th>Start Time</th>
         <th>End Time</th>
         <th>Duration (hrs)</th>
+        <th>Course_covered</th>
     </tr>
     {% for log in logs %}
     <tr>
@@ -22,6 +23,7 @@
         <td>{{ log.start_time }}</td>
         <td>{{ log.end_time }}</td>
         <td>{{ log.duration }}</td>
+        <td>{{log.remarks}}</td>
     </tr>
     {% endfor %}
 </table>

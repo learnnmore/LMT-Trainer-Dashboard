@@ -1,19 +1,15 @@
 {% extends 'base.html' %}
 
 {% block content %}
-{% if user.is_superuser %}
-    <h2>Edit Trainer</h2>
-    <form method="POST">
-        {% csrf_token %}
-        <label>Name:</label>
-        <input type="text" name="name" value="{{ trainer.name }}" required>
-        <label>Subjects:</label>
-        <input type="text" name="subjects" value="{{ trainer.subjects }}" required>
-        <label>Expected Daily Hours:</label>
-        <input type="number" step="0.5" name="expected_daily_hours" value="{{ trainer.expected_daily_hours }}" required>
-        <input type="submit" value="Update Trainer">
-    </form>
-{% else %}
-    <p class="error">You are not authorized to edit trainers.</p>
-{% endif %}
+<h2>Edit Trainer</h2>
+<form method="POST">
+    {% csrf_token %}
+    <label>Name:</label>
+    <input type="text" name="name" value="{{ trainer.name }}" required>
+    <label>Subjects:</label>
+    <input type="text" name="subjects" value="{{ trainer.subjects }}" required>
+    <label>Expected Daily Hours:</label>
+    <input type="number" step="0.5" name="expected_daily_hours" value="{{ trainer.expected_daily_hours }}" required>
+    <input type="submit" value="Update Trainer">
+</form>
 {% endblock %}

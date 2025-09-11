@@ -1,9 +1,15 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Add Class Log for {{ trainer.name }}</h2>
-<form method="POST" onsubmit="return validateForm()">
+<h2>Add Class Log</h2>
+<form method="POST">
     {% csrf_token %}
+    <label>Trainer:</label>
+    <select name="trainer" required>
+        {% for trainer in trainers %}
+        <option value="{{ trainer.id }}">{{ trainer.name }}</option>
+        {% endfor %}
+    </select>
     <label>Batch:</label>
     <select name="batch" required>
         {% for batch in batches %}
@@ -11,23 +17,14 @@
         {% endfor %}
     </select>
     <label>Date:</label>
-    <input type="date" name="date" value="2025-06-22" required>
+    <input type="text" name="date" placeholder="dd-mm-yyyy" required>
+
     <label>Start Time:</label>
-    <input type="time" name="start_time" id="start_time" required>
+    <input type="text" name="start_time" required>
     <label>End Time:</label>
-    <input type="time" name="end_time" id="end_time" required>
+    <input type="text" name="end_time" required>
+    <label>Remarks (Topics Covered):</label>
+    <textarea name="remarks" rows="4" cols="50" placeholder="Enter topics being taught..."></textarea>
     <input type="submit" value="Add Log">
 </form>
-
-<script>
-function validateForm() {
-    const startTime = document.getElementById('start_time').value;
-    const endTime = document.getElementById('end_time').value;
-    if (startTime && endTime && endTime <= startTime) {
-        alert('End time must be after start time.');
-        return false;
-    }
-    return true;
-}
-</script>
 {% endblock %}

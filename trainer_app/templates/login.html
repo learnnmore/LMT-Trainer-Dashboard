@@ -1,13 +1,59 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h2>Login</h2>
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Login">
-</form>
-{% if form.errors %}
-    <p class="error">Invalid username or password.</p>
-{% endif %}
+<div class="login-container">
+    <h2>Trainer Login</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Login</button>
+    </form>
+</div>
+
+<style>
+    .login-container {
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 25px;
+        background: #f8f9fa;
+        border-radius: 12px;
+        box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+        text-align: center;
+    }
+
+    .login-container h2 {
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .login-container form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .login-container input[type="text"],
+    .login-container input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 14px;
+    }
+
+    .login-container button {
+        padding: 10px;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    .login-container button:hover {
+        background: #0056b3;
+    }
+</style>
 {% endblock %}
