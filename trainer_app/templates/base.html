@@ -52,12 +52,16 @@
         <nav>
             <a href="{% url 'index' %}">Home</a>
 
-            {% if user.is_authenticated and user.is_staff %}
+            {% if user.is_authenticated and role == "admin" %}
                 <a href="{% url 'add_trainer' %}">Add Trainer</a>
                 <a href="{% url 'add_batch' %}">Add Batch</a>
                 <a href="{% url 'add_log' %}">Add Class Log</a>
                 <a href="{% url 'weekly_report' %}">Weekly Report</a>
                 <a href="{% url 'add_trainer_admin' %}">Add Trainer (Admin)</a>
+            {% endif %}
+
+            {% if user.is_authenticated and user.is_superuser %}
+                <a href="{% url 'manage_users' %}">Manage Users</a>
             {% endif %}
 
             {% if user.is_authenticated %}

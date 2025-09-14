@@ -4,21 +4,31 @@
 <h2>Daily Progress</h2>
 {% for item in trainer_progress %}
     <div>
+        <p>DEBUG ROLE: {{ role }}</p>
+<p>DEBUG USER: {{ user.username }}</p>
+
         <h3>{{ item.trainer.name }} ({{ item.trainer.subjects }})</h3>
         <p>Hours Taught: {{ item.daily_hours }} / {{ item.trainer.expected_daily_hours }} hrs</p>
         <p>Remaining: {{ item.remaining_hours }} hrs</p>
         <div class="progress-bar">
-            <div class="progress" style="width: {{ item.progress_percentage }}%;">{{ item.progress_percentage|floatformat:0 }}%</div>
+            <div class="progress" style="width: {{ item.progress_percentage }}%;">
+                {{ item.progress_percentage|floatformat:0 }}%
+            </div>
         </div>
-        
-        <a href="{% url 'edit_trainer' item.trainer.id %}">Edit</a> |
-        <a href="{% url 'delete_trainer' item.trainer.id %}" onclick="return confirm('Are you sure?')">Delete</a>
+
+        <!-- Edit/Delete control -->
+        {% if role == "admin" or item.trainer.user == user %}
+            <a href="{% url 'edit_trainer' item.trainer.id %}">Edit</a>
+        {% endif %}
+        {% if role == "admin" %}
+            | <a href="{% url 'delete_trainer' item.trainer.id %}" onclick="return confirm('Are you sure?')">Delete</a>
+        {% endif %}
     </div>
 {% endfor %}
 
 <!-- Buttons -->
 <div style="margin: 20px 0;">
-    {% if user.is_staff %}
+    {% if role == "admin" %}
         <!-- Admin ke liye -->
         <a href="{% url 'add_trainer' %}">
             <button style="padding:10px 20px; background:#1e3c72; color:white; border:none; border-radius:6px; cursor:pointer;">
@@ -37,37 +47,11 @@
                 + Add Batch
             </button>
         </a>
-        <a href="{% url 'add_log' %}">
+        <a href="{% url 'add_log' %}"> 
             <button style="padding:10px 20px; background:#1e3c72; color:white; border:none; border-radius:6px; cursor:pointer;">
                 + Add Class Log
             </button>
         </a>
     {% endif %}
 </div>
-
-<h2>Batches</h2>
-<table>
-    <tr>
-        <th>Name</th>
-        <th>Course</th>
-        <th>Trainer</th>
-        <th>Start Date</th>
-        <th>End Date</th>
-        <th>Days Taken</th>
-        <th>Status</th>
-        <th>Details</th>
-    </tr>
-    {% for batch in batches %}
-    <tr>
-        <td>{{ batch.name }}</td>
-        <td>{{ batch.course }}</td>
-        <td>{{ batch.trainer.name }}</td>
-        <td>{{ batch.start_date }}</td>
-        <td>{{ batch.end_date|default:"-" }}</td>
-        <td>{{ batch.days_taken }}</td>
-        <td>{{ batch.status }}</td>
-        <td><a href="{% url 'batch_details' batch.id %}">View</a></td>
-    </tr>
-    {% endfor %}
-</table>
 {% endblock %}

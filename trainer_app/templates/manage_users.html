@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Manage Users (Admin Only)</h2>
+    <table class="table table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Current Role</th>
+                <th>Change Role</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>
+                    {% if user.profile and user.profile.role %}
+                        {{ user.profile.role|title }}
+                    {% else %}
+                        No Role Assigned
+                    {% endif %}
+                </td>
+                <td>
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="user_id" value="{{ user.id }}">
+                        <select name="role" class="form-select" required>
+                            <option value="admin" {% if user.profile and user.profile.role == "admin" %}selected{% endif %}>Admin</option>
+                            <option value="read_write" {% if user.profile and user.profile.role == "read_write" %}selected{% endif %}>Read & Write</option>
+                            <option value="read_only" {% if user.profile and user.profile.role == "read_only" %}selected{% endif %}>Read Only</option>
+                        </select>
+                        <button type="submit" class="btn btn-sm btn-primary mt-2">Update</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
